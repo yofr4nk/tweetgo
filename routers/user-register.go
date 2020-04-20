@@ -22,6 +22,10 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "The name is required", 400)
 	}
 
+	if len(u.Email) == 0 {
+		http.Error(w, "The email is required", 400)
+	}
+
 	w.WriteHeader(http.StatusCreated)
 }
 

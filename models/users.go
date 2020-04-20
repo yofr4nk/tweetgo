@@ -1,7 +1,6 @@
 package models
 
 import (
-	"time"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -9,5 +8,5 @@ import (
 type User struct {
 	ID			primitive.ObjectID	`bson: "_id, omitempty", json: id"`
 	Name 		string				`bson: "name", json: name, omitempty"`
-	CreatedAt 	time.Time 			`bson: "created_at", json: created_at, omitempty"`
+	Email 		string				`bson: "email", json: email"`
 }
