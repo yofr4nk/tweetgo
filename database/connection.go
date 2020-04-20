@@ -59,7 +59,3 @@ func CheckingConnection() bool {
 
 	return true
 }
-
-func getAuthVariables() {
-
-}
