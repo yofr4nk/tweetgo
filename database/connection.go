@@ -11,8 +11,8 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// DatabaseConnection returns the client connection
-var DatabaseConnection = ConnectDatabaBase()
+// DBConnect returns the client connection
+var DBConnect = ConnectDatabaBase()
 
 // ConnectDatabaBase returns the client connection
 func ConnectDatabaBase() *mongo.Client {
@@ -28,11 +28,11 @@ func ConnectDatabaBase() *mongo.Client {
 	password := os.Getenv("PASSWORD")
 	databasePath := os.Getenv("DATABASE_PATH")
 
-	var clientOptions = options.Client().ApplyURI("mongodb+srv://"+userDatabase+":"+password+"@"+databasePath)
+	var clientOptions = options.Client().ApplyURI("mongodb+srv://" + userDatabase + ":" + password + "@" + databasePath)
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 
 	if err != nil {
-		log.Fatal("Database Connection Error, "+err.Error())
+		log.Fatal("Database Connection Error, " + err.Error())
 		return client
 	}
 
@@ -51,7 +51,7 @@ func ConnectDatabaBase() *mongo.Client {
 
 // CheckingConnection check if the database connection is available
 func CheckingConnection() bool {
-	checkError := DatabaseConnection.Ping(context.TODO(), nil)
+	checkError := DBConnect.Ping(context.TODO(), nil)
 
 	if checkError != nil {
 		return false

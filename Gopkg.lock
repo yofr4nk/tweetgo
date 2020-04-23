@@ -121,9 +121,13 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:f92f6956e4059f6a3efc14924d2dd58ba90da25cc57fe07ae3779ef2f5e0c5f2"
+  digest = "1:d71baed52a5a67407a72b63949aa042ea68bb32fdab03e07704a4f1dc309d193"
   name = "golang.org/x/crypto"
-  packages = ["pbkdf2"]
+  packages = [
+    "bcrypt",
+    "blowfish",
+    "pbkdf2",
+  ]
   pruneopts = "UT"
   revision = "0848c9571904fcbcb24543358ca8b5a7dbfde875"
 
@@ -157,9 +161,11 @@
     "github.com/gorilla/mux",
     "github.com/joho/godotenv",
     "github.com/rs/cors",
+    "go.mongodb.org/mongo-driver/bson",
     "go.mongodb.org/mongo-driver/bson/primitive",
     "go.mongodb.org/mongo-driver/mongo",
     "go.mongodb.org/mongo-driver/mongo/options",
+    "golang.org/x/crypto/bcrypt",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
