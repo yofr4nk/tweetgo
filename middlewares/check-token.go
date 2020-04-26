@@ -18,6 +18,7 @@ func CheckToken(next http.HandlerFunc) http.HandlerFunc {
 		}
 
 		w.Header().Set("Email", claims.Email)
+		w.Header().Set("Id", claims.ID.Hex())
 		next.ServeHTTP(w, r)
 	}
 }

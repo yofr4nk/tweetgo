@@ -12,14 +12,6 @@ import (
 	"github.com/yofr4nk/tweetgo/models"
 )
 
-// TokenData save info from tokenInfo
-type TokenData struct {
-	Email  string
-	UserID string
-}
-
-var tokenInfo TokenData
-
 // GetTokenData validate token provided
 func GetTokenData(t string) (*models.Claim, bool, string, error) {
 	//Checking environment before load .env
@@ -53,10 +45,7 @@ func GetTokenData(t string) (*models.Claim, bool, string, error) {
 		}
 
 		if userFound == true {
-			tokenInfo.Email = claims.Email
-			tokenInfo.UserID = claims.ID.Hex()
-
-			return claims, userFound, tokenInfo.UserID, nil
+			return claims, userFound, claims.ID.Hex(), nil
 		}
 	}
 

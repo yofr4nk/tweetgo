@@ -18,6 +18,7 @@ func MainManagement() {
 	router.HandleFunc("/user-register", middlewares.CheckDatabase(routers.UserRegister)).Methods("POST")
 	router.HandleFunc("/user-login", middlewares.CheckDatabase(routers.Login)).Methods("POST")
 	router.HandleFunc("/get-profile", middlewares.CheckDatabase(middlewares.CheckToken(routers.GetProfile))).Methods("GET")
+	router.HandleFunc("/update-profile", middlewares.CheckDatabase(middlewares.CheckToken(routers.UpdateProfile))).Methods("PUT")
 
 	PORT := os.Getenv("PORT")
 
