@@ -6,9 +6,9 @@ import (
 	"log"
 	"os"
 
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"github.com/joho/godotenv"
 )
 
 // DBConnect returns the client connection
@@ -23,7 +23,7 @@ func ConnectDatabaBase() *mongo.Client {
 			log.Fatal("Error loading environment variables", err.Error())
 		}
 	}
-	
+
 	userDatabase := os.Getenv("USER_DATABASE")
 	password := os.Getenv("PASSWORD")
 	databasePath := os.Getenv("DATABASE_PATH")

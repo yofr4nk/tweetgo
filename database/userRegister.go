@@ -3,7 +3,6 @@ package database
 import (
 	"context"
 	"time"
-	"fmt"
 
 	"github.com/yofr4nk/tweetgo/models"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -27,6 +26,6 @@ func SaveUser(u models.User) (string, bool, error) {
 	}
 
 	ObjID, _ := result.InsertedID.(primitive.ObjectID)
-	fmt.Println(ObjID.String());
+
 	return ObjID.String(), true, nil
 }

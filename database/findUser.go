@@ -4,11 +4,12 @@ import (
 	"context"
 	"time"
 
+	"github.com/yofr4nk/tweetgo/models"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-// FindUserExists get the user by email
-func FindUserExists(email string) (bool, error) {
+// FindUser get the user by email
+func FindUser(email string) (models.User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 
 	defer cancel()
@@ -18,15 +19,13 @@ func FindUserExists(email string) (bool, error) {
 
 	condition := bson.M{"email": email}
 
-	count, err := userCollection.CountDocuments(ctx, condition)
+	var u models.User
+
+	err := userCollection.FindOne(ctx, condition).Decode(&u)
 
 	if err != nil {
-		return false, err
+		return u, err
 	}
 
-	if count > 0 {
-		return true, nil
-	}
-
-	return false, nil
+	return u, nil
 }

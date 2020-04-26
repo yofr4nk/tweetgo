@@ -3,6 +3,7 @@ package middlewares
 import (
 	"log"
 	"net/http"
+
 	"github.com/yofr4nk/tweetgo/database"
 )
 
