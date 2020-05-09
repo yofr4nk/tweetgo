@@ -20,37 +20,39 @@ func UpdateUser(u models.User, ID string) (bool, error) {
 	userToUpdate := make(map[string]interface{})
 
 	if len(u.Name) > 0 {
-		userToUpdate["Name"] = u.Name
+		userToUpdate["name"] = u.Name
 	}
 
 	if len(u.LastName) > 0 {
-		userToUpdate["LastName"] = u.LastName
+		userToUpdate["lastname"] = u.LastName
 	}
 
-	userToUpdate["UserBirthday"] = u.UserBirthday
+	if len(u.UserBirthday) > 0 {
+		userToUpdate["userbirthday"] = u.UserBirthday
+	}
 
 	if len(u.Email) > 0 {
-		userToUpdate["Email"] = u.Email
+		userToUpdate["email"] = u.Email
 	}
 
 	if len(u.Avatar) > 0 {
-		userToUpdate["Avatar"] = u.Avatar
+		userToUpdate["avatar"] = u.Avatar
 	}
 
 	if len(u.Banner) > 0 {
-		userToUpdate["Banner"] = u.Banner
+		userToUpdate["banner"] = u.Banner
 	}
 
 	if len(u.Biography) > 0 {
-		userToUpdate["Biography"] = u.Biography
+		userToUpdate["biography"] = u.Biography
 	}
 
 	if len(u.Location) > 0 {
-		userToUpdate["Location"] = u.Location
+		userToUpdate["location"] = u.Location
 	}
 
 	if len(u.WebSite) > 0 {
-		userToUpdate["WebSite"] = u.WebSite
+		userToUpdate["website"] = u.WebSite
 	}
 
 	setContainer := bson.M{

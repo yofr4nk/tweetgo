@@ -2,6 +2,7 @@ package routers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/yofr4nk/tweetgo/database"
@@ -19,7 +20,10 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 	u, err := database.FindUser(userEmail)
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		log.Fatal("Cannot get profile error, " + err.Error())
+		http.Error(w, "Cannot get profile", http.StatusBadRequest)
+
+		return
 	}
 
 	u.Password = ""

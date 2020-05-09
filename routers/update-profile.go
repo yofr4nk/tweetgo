@@ -34,8 +34,12 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 
 	if status == false {
 		http.Error(w, "It could not possible to update profile", http.StatusBadRequest)
+
+		return
 	}
 
 	w.Header().Set("Content-type", "application/json")
+	w.Header().Del("Id")
+	w.Header().Del("Email")
 	w.WriteHeader(http.StatusCreated)
 }

@@ -47,6 +47,8 @@ func GetTokenData(t string) (*models.Claim, bool, string, error) {
 		if userFound == true {
 			return claims, userFound, claims.ID.Hex(), nil
 		}
+
+		return claims, false, string(""), errors.New("User not found")
 	}
 
 	if tokn.Valid == false {
