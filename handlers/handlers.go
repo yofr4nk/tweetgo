@@ -19,6 +19,8 @@ func MainManagement() {
 	router.HandleFunc("/user-login", middlewares.CheckDatabase(routers.Login)).Methods("POST")
 	router.HandleFunc("/get-profile", middlewares.CheckDatabase(middlewares.CheckToken(routers.GetProfile))).Methods("GET")
 	router.HandleFunc("/update-profile", middlewares.CheckDatabase(middlewares.CheckToken(routers.UpdateProfile))).Methods("PUT")
+	router.HandleFunc("/save-tweet", middlewares.CheckDatabase(middlewares.CheckToken(routers.SaveTweet))).Methods("POST")
+	router.HandleFunc("/get-tweet", middlewares.CheckDatabase(middlewares.CheckToken(routers.GetTweet))).Methods("GET")
 
 	PORT := os.Getenv("PORT")
 
