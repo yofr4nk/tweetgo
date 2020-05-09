@@ -29,7 +29,7 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 	u.Password = ""
 
 	w.Header().Set("Content-type", "application/json")
-	w.WriteHeader(http.StatusAccepted)
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(u)
 
 }

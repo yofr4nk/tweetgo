@@ -41,5 +41,5 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json")
 	w.Header().Del("Id")
 	w.Header().Del("Email")
-	w.WriteHeader(http.StatusCreated)
+	w.WriteHeader(http.StatusOK)
 }
