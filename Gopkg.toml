@@ -24,6 +24,11 @@
 #   go-tests = true
 #   unused-packages = true
 
+[metadata.heroku]
+  root-package = "github.com/yofr4nk/tweetgo"
+  go-version = "1.14.2"
+  install = [ "./..." ]
+
 
 [[constraint]]
   name = "github.com/aws/aws-sdk-go"
