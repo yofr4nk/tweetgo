@@ -2,6 +2,59 @@
 
 
 [[projects]]
+  digest = "1:a5050fecef31e391e3d7c29f36682a77c88a373c8416f6e1407f76f385911f4d"
+  name = "github.com/aws/aws-sdk-go"
+  packages = [
+    "aws",
+    "aws/arn",
+    "aws/awserr",
+    "aws/awsutil",
+    "aws/client",
+    "aws/client/metadata",
+    "aws/corehandlers",
+    "aws/credentials",
+    "aws/credentials/ec2rolecreds",
+    "aws/credentials/endpointcreds",
+    "aws/credentials/processcreds",
+    "aws/credentials/stscreds",
+    "aws/csm",
+    "aws/defaults",
+    "aws/ec2metadata",
+    "aws/endpoints",
+    "aws/request",
+    "aws/session",
+    "aws/signer/v4",
+    "internal/context",
+    "internal/ini",
+    "internal/s3err",
+    "internal/sdkio",
+    "internal/sdkmath",
+    "internal/sdkrand",
+    "internal/sdkuri",
+    "internal/shareddefaults",
+    "internal/strings",
+    "internal/sync/singleflight",
+    "private/protocol",
+    "private/protocol/eventstream",
+    "private/protocol/eventstream/eventstreamapi",
+    "private/protocol/json/jsonutil",
+    "private/protocol/query",
+    "private/protocol/query/queryutil",
+    "private/protocol/rest",
+    "private/protocol/restxml",
+    "private/protocol/xml/xmlutil",
+    "service/s3",
+    "service/s3/internal/arn",
+    "service/s3/s3iface",
+    "service/s3/s3manager",
+    "service/sts",
+    "service/sts/stsiface",
+  ]
+  pruneopts = "UT"
+  revision = "80760876d2f0fe900443900ba667b7a15ebfd055"
+  version = "v1.30.24"
+
+[[projects]]
   digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
   name = "github.com/dgrijalva/jwt-go"
   packages = ["."]
@@ -34,6 +87,13 @@
   version = "v1.7.4"
 
 [[projects]]
+  digest = "1:bb81097a5b62634f3e9fec1014657855610c82d19b9a40c17612e32651e35dca"
+  name = "github.com/jmespath/go-jmespath"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "c2b33e84"
+
+[[projects]]
   digest = "1:ecd9aa82687cf31d1585d4ac61d0ba180e42e8a6182b85bd785fcca8dfeefc1b"
   name = "github.com/joho/godotenv"
   packages = ["."]
@@ -42,7 +102,7 @@
   version = "v1.3.0"
 
 [[projects]]
-  digest = "1:093b96fbb3db40828ecf711043048e8a3c4191fe7a7c10367db736427390f0b2"
+  digest = "1:9e3e13e17495f7e8e066b07e340036dc45fe9dc7b0a35dd4819dec2721929572"
   name = "github.com/klauspost/compress"
   packages = [
     "fse",
@@ -52,8 +112,8 @@
     "zstd/internal/xxhash",
   ]
   pruneopts = "UT"
-  revision = "e2d2089232ece4911272106ae65a7a06746ea38a"
-  version = "v1.10.4"
+  revision = "4a2d40e4b07e5b3d333bc0569facd0f2dbf4ef39"
+  version = "v1.10.5"
 
 [[projects]]
   digest = "1:9e1d37b58d17113ec3cb5608ac0382313c5b59470b94ed97d0976e69c7022314"
@@ -88,7 +148,7 @@
   revision = "73f8eece6fdcd902c185bf651de50f3828bed5ed"
 
 [[projects]]
-  digest = "1:69bfe5ee56ac436a74298c8be4642907c84da2f4be05067799d1f1fc53fe8e84"
+  digest = "1:64dd8dfd052bae029cf4298003e52091f683477f3addb037e7d5b388260fab53"
   name = "go.mongodb.org/mongo-driver"
   packages = [
     "bson",
@@ -124,8 +184,8 @@
     "x/mongo/driver/wiremessage",
   ]
   pruneopts = "UT"
-  revision = "dbe9cee06654c7d19e291eb74b9da49b4c6a0fd4"
-  version = "v1.3.2"
+  revision = "21e280c95635166b64311808c2bd9b8d02b94f22"
+  version = "v1.3.3"
 
 [[projects]]
   branch = "master"
@@ -137,7 +197,7 @@
     "pbkdf2",
   ]
   pruneopts = "UT"
-  revision = "0848c9571904fcbcb24543358ca8b5a7dbfde875"
+  revision = "4b2356b1ed79e6be3deca3737a3db3d132d2847a"
 
 [[projects]]
   branch = "master"
@@ -166,6 +226,11 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/aws/aws-sdk-go/aws",
+    "github.com/aws/aws-sdk-go/aws/credentials",
+    "github.com/aws/aws-sdk-go/aws/session",
+    "github.com/aws/aws-sdk-go/service/s3",
+    "github.com/aws/aws-sdk-go/service/s3/s3manager",
     "github.com/dgrijalva/jwt-go",
     "github.com/gorilla/mux",
     "github.com/joho/godotenv",
