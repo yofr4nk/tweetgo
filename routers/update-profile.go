@@ -27,7 +27,7 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	status, updateErr := database.UpdateUser(u, userID)
 
 	if updateErr != nil {
-		http.Error(w, "Something went wrong updating profile"+err.Error(), 400)
+		http.Error(w, "Something went wrong updating profile: "+updateErr.Error(), 400)
 
 		return
 	}
