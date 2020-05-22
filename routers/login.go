@@ -3,10 +3,9 @@ package routers
 import (
 	"encoding/json"
 	"net/http"
-
-	"github.com/yofr4nk/tweetgo/database"
-	"github.com/yofr4nk/tweetgo/models"
-	"github.com/yofr4nk/tweetgo/security"
+	"tweetgo/database"
+	"tweetgo/models"
+	"tweetgo/security"
 )
 
 // Login validate user data passed to create a token

@@ -5,11 +5,11 @@ import (
 	"log"
 	"os"
 	"strings"
+	"tweetgo/database"
+	"tweetgo/models"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/joho/godotenv"
-	"github.com/yofr4nk/tweetgo/database"
-	"github.com/yofr4nk/tweetgo/models"
 )
 
 // GetTokenData validate token provided

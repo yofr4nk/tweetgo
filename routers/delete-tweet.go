@@ -2,8 +2,7 @@ package routers
 
 import (
 	"net/http"
-
-	"github.com/yofr4nk/tweetgo/database"
+	"tweetgo/database"
 )
 
 // DeleteTweet remove tweet

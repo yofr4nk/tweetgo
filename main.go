@@ -2,9 +2,8 @@ package main
 
 import (
 	"log"
-
-	"github.com/yofr4nk/tweetgo/database"
-	"github.com/yofr4nk/tweetgo/handlers"
+	"tweetgo/database"
+	"tweetgo/handlers"
 )
 
 func main() {

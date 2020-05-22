@@ -4,9 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-
-	"github.com/yofr4nk/tweetgo/database"
-	"github.com/yofr4nk/tweetgo/models"
+	"tweetgo/database"
+	"tweetgo/models"
 )
 
 // GetProfile find user data
@@ -20,7 +19,7 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 	u, err := database.FindUser(userEmail)
 
 	if err != nil {
-		log.Fatal("Cannot get profile error, " + err.Error())
+		log.Print("Cannot get profile error, " + err.Error())
 		http.Error(w, "Cannot get profile", http.StatusBadRequest)
 
 		return

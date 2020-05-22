@@ -3,12 +3,11 @@ package routers
 import (
 	"encoding/json"
 	"net/http"
-	"os"
 	"path/filepath"
+	"tweetgo/database"
+	"tweetgo/models"
+	"tweetgo/multimedia"
 
-	"github.com/yofr4nk/tweetgo/database"
-	"github.com/yofr4nk/tweetgo/models"
-	"github.com/yofr4nk/tweetgo/multimedia"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -18,7 +17,7 @@ func UploadAvatar(w http.ResponseWriter, r *http.Request) {
 
 	userID := w.Header().Get("Id")
 	email := w.Header().Get("Email")
-	bucketURL := os.Getenv("AWS_BASE_URL")
+
 	var u models.User
 
 	file, fileHeader, err := r.FormFile("avatar")
@@ -31,7 +30,7 @@ func UploadAvatar(w http.ResponseWriter, r *http.Request) {
 
 	filePathName := "avatars/" + primitive.NewObjectID().Hex() + filepath.Ext(fileHeader.Filename)
 
-	uErr := multimedia.UploadFile(filePathName, file, fileHeader)
+	fileLocation, uErr := multimedia.UploadFile(filePathName, file, fileHeader)
 
 	if uErr != nil {
 		http.Error(w, "Something went wrong uploading avatar ", http.StatusBadRequest)
@@ -39,7 +38,7 @@ func UploadAvatar(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	u.Avatar = bucketURL + filePathName
+	u.Avatar = fileLocation
 
 	status, updateErr := database.UpdateUser(u, userID)
 

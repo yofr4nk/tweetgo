@@ -4,11 +4,11 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"tweetgo/middlewares"
+	"tweetgo/routers"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
-	"github.com/yofr4nk/tweetgo/middlewares"
-	"github.com/yofr4nk/tweetgo/routers"
 )
 
 // MainManagement set the main config for routers

@@ -4,8 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
-
-	"github.com/yofr4nk/tweetgo/database"
+	"tweetgo/database"
 )
 
 // GetTweet find tweets data

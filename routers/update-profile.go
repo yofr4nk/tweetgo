@@ -3,9 +3,8 @@ package routers
 import (
 	"encoding/json"
 	"net/http"
-
-	"github.com/yofr4nk/tweetgo/database"
-	"github.com/yofr4nk/tweetgo/models"
+	"tweetgo/database"
+	"tweetgo/models"
 )
 
 // UpdateProfile modify user data

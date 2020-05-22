@@ -5,9 +5,8 @@ import (
 	"log"
 	"net/http"
 	"time"
-
-	"github.com/yofr4nk/tweetgo/database"
-	"github.com/yofr4nk/tweetgo/models"
+	"tweetgo/database"
+	"tweetgo/models"
 )
 
 // SaveTweet allow to save a new tweet
@@ -33,14 +32,14 @@ func SaveTweet(w http.ResponseWriter, r *http.Request) {
 	_, status, err := database.SaveTweet(tweetMessage)
 
 	if err != nil {
-		log.Fatal("Something went wront saving tweet " + err.Error())
+		log.Print("Something went wront saving tweet " + err.Error())
 		http.Error(w, "Something went wront saving tweet "+err.Error(), 400)
 
 		return
 	}
 
 	if status == false {
-		log.Fatal("Something went wront saving tweet ")
+		log.Print("Something went wront saving tweet ")
 		http.Error(w, "Something went wront saving tweet ", 400)
 
 		return

@@ -13,7 +13,7 @@ import (
 )
 
 // UploadFile get file info to upload in s3
-func UploadFile(filePathName string, file multipart.File, fileHeader *multipart.FileHeader) error {
+func UploadFile(filePathName string, file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
 	awsBucket := os.Getenv("BUCKET")
 
 	size := fileHeader.Size
@@ -23,14 +23,14 @@ func UploadFile(filePathName string, file multipart.File, fileHeader *multipart.
 	sess, errSession := CreateAwsSession()
 
 	if errSession != nil {
-		log.Fatal("something went wrong creating aws session " + errSession.Error())
+		log.Print("something went wrong creating aws session " + errSession.Error())
 
-		return errSession
+		return "", errSession
 	}
 
 	uploader := s3manager.NewUploader(sess)
 
-	_, errUploader := uploader.Upload(&s3manager.UploadInput{
+	uploadInfo, errUploader := uploader.Upload(&s3manager.UploadInput{
 		Bucket:      aws.String(awsBucket),
 		Key:         aws.String(filePathName),
 		ContentType: aws.String(http.DetectContentType(buffer)),
@@ -38,12 +38,12 @@ func UploadFile(filePathName string, file multipart.File, fileHeader *multipart.
 	})
 
 	if errUploader != nil {
-		log.Fatal("uploading error " + errUploader.Error())
+		log.Print("uploading error " + errUploader.Error())
 
-		return errUploader
+		return "", errUploader
 	}
 
 	fmt.Println("Uploaded")
 
-	return nil
+	return uploadInfo.Location, nil
 }

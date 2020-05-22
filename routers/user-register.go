@@ -4,9 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-
-	"github.com/yofr4nk/tweetgo/database"
-	"github.com/yofr4nk/tweetgo/models"
+	"tweetgo/database"
+	"tweetgo/models"
 )
 
 // UserRegister get the data from request and save it
@@ -50,14 +49,14 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 	_, status, err := database.SaveUser(u)
 
 	if err != nil {
-		log.Fatal("Something went wront saving user " + err.Error())
+		log.Print("Something went wront saving user " + err.Error())
 		http.Error(w, "Something went wront saving user "+err.Error(), 400)
 
 		return
 	}
 
 	if status == false {
-		log.Fatal("Something went wront saving user ")
+		log.Print("Something went wront saving user ")
 		http.Error(w, "Something went wront saving user ", 400)
 
 		return

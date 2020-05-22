@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 	"time"
+	"tweetgo/models"
 
-	"github.com/yofr4nk/tweetgo/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -33,7 +33,7 @@ func GetTweets(userID string, page int64) ([]*models.Tweet, bool) {
 	data, err := tweetCollection.Find(ctx, filter, queryOtions)
 
 	if err != nil {
-		log.Fatal("Something went wront getting tweets " + err.Error())
+		log.Print("Something went wront getting tweets " + err.Error())
 
 		return result, false
 	}

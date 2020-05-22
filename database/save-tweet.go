@@ -3,8 +3,8 @@ package database
 import (
 	"context"
 	"time"
+	"tweetgo/models"
 
-	"github.com/yofr4nk/tweetgo/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )

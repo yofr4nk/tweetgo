@@ -2,8 +2,7 @@ package middlewares
 
 import (
 	"net/http"
-
-	"github.com/yofr4nk/tweetgo/security"
+	"tweetgo/security"
 )
 
 // CheckToken validate provided token

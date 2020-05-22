@@ -1,12 +1,13 @@
 package database
 
 import (
-	"github.com/yofr4nk/tweetgo/models"
 	"golang.org/x/crypto/bcrypt"
+	"tweetgo/models"
 )
 
 // UserLogin make sure the user exists and check password
 func UserLogin(email string, password string) (models.User, bool) {
+
 	userData, findErr := FindUser(email)
 
 	if findErr != nil {

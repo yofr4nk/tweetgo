@@ -32,14 +32,14 @@ func ConnectDatabaBase() *mongo.Client {
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 
 	if err != nil {
-		log.Fatal("Database Connection Error, " + err.Error())
+		log.Print("Database Connection Error, " + err.Error())
 		return client
 	}
 
 	checkError := client.Ping(context.TODO(), nil)
 
 	if checkError != nil {
-		log.Fatal("Checking Connection Error, " + checkError.Error())
+		log.Print("Checking Connection Error, " + checkError.Error())
 		return client
 	}
 

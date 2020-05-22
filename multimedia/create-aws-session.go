@@ -20,7 +20,7 @@ func CreateAwsSession() (*session.Session, error) {
 	})
 
 	if err != nil {
-		log.Fatal("something went wrong creating aws session " + err.Error())
+		log.Print("something went wrong creating aws session " + err.Error())
 
 		return nil, err
 	}

@@ -4,10 +4,10 @@ import (
 	"log"
 	"os"
 	"time"
+	"tweetgo/models"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/joho/godotenv"
-	"github.com/yofr4nk/tweetgo/models"
 )
 
 // GenerateToken create a token based on user info

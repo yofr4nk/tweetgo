@@ -22,7 +22,7 @@ func DeleteTweet(ID string, UserID string) error {
 	objTweetID, err := primitive.ObjectIDFromHex(ID)
 
 	if err != nil {
-		log.Fatal("Something went wront parsing tweetID " + err.Error())
+		log.Print("Something went wront parsing tweetID " + err.Error())
 
 		return err
 	}
