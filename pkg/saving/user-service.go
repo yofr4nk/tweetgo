@@ -1,9 +1,12 @@
 package saving
 
-import "errors"
+import (
+	"errors"
+	"tweetgo/pkg/domain"
+)
 
 type Repository interface {
-	SaveUser(u User) (string, bool, error)
+	SaveUser(u domain.User) (string, bool, error)
 }
 
 type UserService struct {
@@ -14,7 +17,7 @@ func NewUserService(repository Repository) *UserService {
 	return &UserService{repository: repository}
 }
 
-func (s *UserService) SaveUser(u User) (string, bool, error) {
+func (s *UserService) SaveUser(u domain.User) (string, bool, error) {
 	userID, status, err := s.repository.SaveUser(u)
 	if err != nil {
 		return "", false, err

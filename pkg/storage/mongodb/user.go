@@ -6,8 +6,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"time"
+	"tweetgo/pkg/domain"
 	"tweetgo/pkg/encrypting"
-	"tweetgo/pkg/saving"
 )
 
 type UserStorage struct {
@@ -23,7 +23,7 @@ func NewUserStorage(db *mongo.Client) *UserStorage {
 	return &UserStorage{db: db}
 }
 
-func (storage *UserStorage) SaveUser(u saving.User) (string, bool, error) {
+func (storage *UserStorage) SaveUser(u domain.User) (string, bool, error) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
