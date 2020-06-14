@@ -4,10 +4,9 @@ import (
 	"log"
 	"net/http"
 	"tweetgo/pkg/domain"
-	"tweetgo/pkg/saving"
 )
 
-func SaveUser(sus *saving.UserService) http.HandlerFunc {
+func SaveUser(us userSaver) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		u := r.Context().Value(domain.UserCtxKey).(domain.User)
 
@@ -23,7 +22,7 @@ func SaveUser(sus *saving.UserService) http.HandlerFunc {
 			return
 		}
 
-		_, status, err := sus.SaveUser(u)
+		_, status, err := us.SaveUser(u)
 		if err != nil {
 			log.Print("Something went wrong saving user " + err.Error())
 			http.Error(w, "Something went wrong saving user "+err.Error(), 400)

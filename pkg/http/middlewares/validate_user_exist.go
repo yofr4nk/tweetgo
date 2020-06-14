@@ -5,14 +5,12 @@ import (
 	"encoding/json"
 	"net/http"
 	"tweetgo/pkg/domain"
-	"tweetgo/pkg/finding"
 )
 
-func ValidateUserExist(fus *finding.UserService, next http.HandlerFunc) http.HandlerFunc {
+func ValidateUserExist(fus userFinder, next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var u domain.User
 		err := json.NewDecoder(r.Body).Decode(&u)
-
 		if err != nil {
 			http.Error(w, "the received data has errors "+err.Error(), 400)
 
@@ -25,16 +23,16 @@ func ValidateUserExist(fus *finding.UserService, next http.HandlerFunc) http.Han
 			return
 		}
 
-		userExist, findErr := fus.FindUserExists(u.Email)
+		userExist, err := fus.FindUserExists(u.Email)
 
-		if userExist == true {
+		if userExist {
 			http.Error(w, "The user already exist", 400)
 
 			return
 		}
 
-		if findErr != nil {
-			http.Error(w, "Something went wrong searching user: "+findErr.Error(), 400)
+		if err != nil {
+			http.Error(w, "Something went wrong searching user: "+err.Error(), 400)
 
 			return
 		}
