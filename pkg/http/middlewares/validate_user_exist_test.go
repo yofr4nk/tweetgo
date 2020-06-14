@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"tweetgo/pkg/domain"
 	refmiddlewares "tweetgo/pkg/http/middlewares"
 )
 
@@ -27,8 +28,9 @@ func (usm *UserServiceMock) FindUserExists(email string) (bool, error) {
 
 func TestValidateUserExistShouldFailParsingBody(t *testing.T) {
 	us := UserServiceMock{}
-	mw := refmiddlewares.ValidateUserExist(&us, mockHandler)
-	r := mockServerHTTP(mw, nil)
+	mw := refmiddlewares.ValidateUserExist(&us, domain.SetUserToContext, mockHandler)
+	body := strings.NewReader(``)
+	r := mockServerHTTP(mw, body)
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -37,7 +39,7 @@ func TestValidateUserExistShouldFailParsingBody(t *testing.T) {
 
 func TestValidateUserExistShouldFailObtainingEmail(t *testing.T) {
 	us := UserServiceMock{}
-	mw := refmiddlewares.ValidateUserExist(&us, mockHandler)
+	mw := refmiddlewares.ValidateUserExist(&us, domain.SetUserToContext, mockHandler)
 	body := strings.NewReader(`{"email": "" }`)
 	r := mockServerHTTP(mw, body)
 
@@ -50,7 +52,7 @@ func TestValidateUserExistShouldFailWhenEmailAlreadyExist(t *testing.T) {
 	us := UserServiceMock{
 		userExist: true,
 	}
-	mw := refmiddlewares.ValidateUserExist(&us, mockHandler)
+	mw := refmiddlewares.ValidateUserExist(&us, domain.SetUserToContext, mockHandler)
 	body := strings.NewReader(`{"email": "fakeEmail" }`)
 	r := mockServerHTTP(mw, body)
 
@@ -63,7 +65,7 @@ func TestValidateUserExistShouldFailValidatingIfUserExist(t *testing.T) {
 	us := UserServiceMock{
 		shouldFail: true,
 	}
-	mw := refmiddlewares.ValidateUserExist(&us, mockHandler)
+	mw := refmiddlewares.ValidateUserExist(&us, domain.SetUserToContext, mockHandler)
 	body := strings.NewReader(`{"email": "fakeEmail" }`)
 	r := mockServerHTTP(mw, body)
 
@@ -74,7 +76,7 @@ func TestValidateUserExistShouldFailValidatingIfUserExist(t *testing.T) {
 
 func TestValidateUserExistShouldResponseWhitStatusOk(t *testing.T) {
 	us := UserServiceMock{}
-	mw := refmiddlewares.ValidateUserExist(&us, mockHandler)
+	mw := refmiddlewares.ValidateUserExist(&us, domain.SetUserToContext, mockHandler)
 	body := strings.NewReader(`{"email": "fakeEmail" }`)
 	r := mockServerHTTP(mw, body)
 

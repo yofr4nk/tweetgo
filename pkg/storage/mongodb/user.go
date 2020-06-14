@@ -3,7 +3,6 @@ package mongodb
 import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"time"
 	"tweetgo/pkg/domain"
@@ -23,7 +22,7 @@ func NewUserStorage(db *mongo.Client) *UserStorage {
 	return &UserStorage{db: db}
 }
 
-func (storage *UserStorage) SaveUser(u domain.User) (string, bool, error) {
+func (storage *UserStorage) SaveUser(u domain.User) (bool, error) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
@@ -33,15 +32,13 @@ func (storage *UserStorage) SaveUser(u domain.User) (string, bool, error) {
 
 	u.Password, _ = encrypting.HashPassword(u.Password)
 
-	result, err := userCollection.InsertOne(ctx, u)
+	_, err := userCollection.InsertOne(ctx, u)
 
 	if err != nil {
-		return "", false, err
+		return false, err
 	}
 
-	ObjID, _ := result.InsertedID.(primitive.ObjectID)
-
-	return ObjID.String(), true, nil
+	return true, nil
 }
 
 func (storage *UserStorage) FindUserExists(email string) (int64, error) {

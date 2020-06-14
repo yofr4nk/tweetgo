@@ -1,13 +1,12 @@
 package refmiddlewares
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
 	"tweetgo/pkg/domain"
 )
 
-func ValidateUserExist(fus userFinder, next http.HandlerFunc) http.HandlerFunc {
+func ValidateUserExist(fus userFinder, setUserToCtx setUserToCtx, next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var u domain.User
 		err := json.NewDecoder(r.Body).Decode(&u)
@@ -37,7 +36,7 @@ func ValidateUserExist(fus userFinder, next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		ctx := context.WithValue(r.Context(), domain.UserCtxKey, u)
+		ctx := setUserToCtx(r.Context(), u)
 		r = r.WithContext(ctx)
 		next(w, r)
 	}

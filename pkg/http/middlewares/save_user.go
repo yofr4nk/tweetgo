@@ -3,36 +3,40 @@ package refmiddlewares
 import (
 	"log"
 	"net/http"
-	"tweetgo/pkg/domain"
 )
 
-func SaveUser(us userSaver) http.HandlerFunc {
+func SaveUser(us userSaver, getUserFromCtx getUserFromCtx) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		u := r.Context().Value(domain.UserCtxKey).(domain.User)
+		u, err := getUserFromCtx(r.Context())
+		if err != nil {
+			http.Error(w, "something went wrong getting user from context: "+err.Error(), 400)
+
+			return
+		}
 
 		if len(u.Email) == 0 {
-			http.Error(w, "The email is required", 400)
+			http.Error(w, "the email is required", 400)
 
 			return
 		}
 
 		if len(u.Password) < 6 {
-			http.Error(w, "The password is required", 400)
+			http.Error(w, "the password is required", 400)
 
 			return
 		}
 
-		_, status, err := us.SaveUser(u)
+		status, err := us.SaveUser(u)
 		if err != nil {
-			log.Print("Something went wrong saving user " + err.Error())
-			http.Error(w, "Something went wrong saving user "+err.Error(), 400)
+			log.Print("something went wrong saving user " + err.Error())
+			http.Error(w, "something went wrong saving user "+err.Error(), 400)
 
 			return
 		}
 
 		if status == false {
-			log.Print("Something went wrong saving user ")
-			http.Error(w, "Something went wrong saving user ", 400)
+			log.Print("cannot save user")
+			http.Error(w, "cannot save user", 400)
 
 			return
 		}
