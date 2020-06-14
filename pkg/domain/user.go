@@ -1,8 +1,8 @@
-package finding
+package domain
 
-import (
-	"go.mongodb.org/mongo-driver/bson/primitive"
-)
+import "go.mongodb.org/mongo-driver/bson/primitive"
+
+const UserCtxKey string = "userCtxKey"
 
 // User is the model where the profile info is saved
 type User struct {
