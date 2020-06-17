@@ -63,3 +63,24 @@ func (storage *UserStorage) FindUserExists(email string) (int64, error) {
 
 	return 0, nil
 }
+
+func (storage *UserStorage) FindUser(email string) (domain.User, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+
+	defer cancel()
+
+	database := storage.db.Database(dbName)
+	userCollection := database.Collection(collection)
+
+	condition := bson.M{"email": email}
+
+	var u domain.User
+
+	err := userCollection.FindOne(ctx, condition).Decode(&u)
+
+	if err != nil {
+		return u, err
+	}
+
+	return u, nil
+}
