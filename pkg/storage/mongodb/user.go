@@ -6,7 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"time"
 	"tweetgo/pkg/domain"
-	"tweetgo/pkg/encrypting"
+	"tweetgo/pkg/hashing"
 )
 
 type UserStorage struct {
@@ -30,7 +30,7 @@ func (storage *UserStorage) SaveUser(u domain.User) (bool, error) {
 	database := storage.db.Database(dbName)
 	userCollection := database.Collection(collection)
 
-	u.Password, _ = encrypting.HashPassword(u.Password)
+	u.Password, _ = hashing.HashPassword(u.Password)
 
 	_, err := userCollection.InsertOne(ctx, u)
 
