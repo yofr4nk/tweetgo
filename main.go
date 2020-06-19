@@ -7,8 +7,10 @@ import (
 	"tweetgo/database"
 	"tweetgo/pkg/finding"
 	"tweetgo/pkg/http/rest"
+	"tweetgo/pkg/loading"
 	"tweetgo/pkg/saving"
 	"tweetgo/pkg/storage/mongodb"
+	"tweetgo/pkg/tokenizer"
 )
 
 func main() {
@@ -18,6 +20,8 @@ func main() {
 		return
 	}
 
+	securityKey := loading.GetSecurityKey()
+
 	//Storage
 	dbClient := mongodb.DBConnection()
 	userStorage := mongodb.NewUserStorage(dbClient)
@@ -25,8 +29,9 @@ func main() {
 	//Services
 	savingUserService := saving.NewUserService(userStorage)
 	findingUserService := finding.NewUserService(userStorage)
+	tokenizerService := tokenizer.NewTokenService(securityKey)
 
-	r := rest.RouterManagement(savingUserService, findingUserService)
+	r := rest.RouterManagement(savingUserService, findingUserService, *tokenizerService)
 
 	PORT := os.Getenv("PORT")
 

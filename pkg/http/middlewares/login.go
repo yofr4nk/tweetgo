@@ -7,13 +7,16 @@ import (
 )
 
 type comparePassword func(password string, passwordHashed string) error
-type generateToken func(u domain.User) (string, error)
+
+type TokenizerService interface {
+	GenerateToken(u domain.User) (string, error)
+}
 
 type loginPayload struct {
 	Token string
 }
 
-func Login(getUser getUser, comparePassword comparePassword, generateToken generateToken) http.HandlerFunc {
+func Login(getUser getUser, comparePassword comparePassword, tokenizerService TokenizerService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-type", "application/json")
 
@@ -46,7 +49,7 @@ func Login(getUser getUser, comparePassword comparePassword, generateToken gener
 			return
 		}
 
-		tokenKey, err := generateToken(userData)
+		tokenKey, err := tokenizerService.GenerateToken(userData)
 		if err != nil {
 			http.Error(w, "Something went wrong creating token "+err.Error(), 400)
 

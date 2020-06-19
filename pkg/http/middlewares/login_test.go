@@ -38,19 +38,17 @@ func comparePassword(ulm UserLoginMock) func(password string, passwordHashed str
 	}
 }
 
-func generateToken(ulm UserLoginMock) func(u domain.User) (string, error) {
-	return func(u domain.User) (string, error) {
-		if ulm.shouldFailGenerateToken {
-			return "", errors.New("FailGenerateToken")
-		}
-
-		return ulm.token, nil
+func (ulm UserLoginMock) GenerateToken(u domain.User) (string, error) {
+	if ulm.shouldFailGenerateToken {
+		return "", errors.New("FailGenerateToken")
 	}
+
+	return ulm.token, nil
 }
 
 func TestLoginShouldFailParsingBody(t *testing.T) {
 	us := UserLoginMock{}
-	mw := refmiddlewares.Login(getUser(us), comparePassword(us), generateToken(us))
+	mw := refmiddlewares.Login(getUser(us), comparePassword(us), us)
 	body := strings.NewReader(``)
 	r := mockServerHTTP(mw, body)
 
@@ -61,7 +59,7 @@ func TestLoginShouldFailParsingBody(t *testing.T) {
 
 func TestLoginShouldFailWhenEmailIsEmpty(t *testing.T) {
 	us := UserLoginMock{}
-	mw := refmiddlewares.Login(getUser(us), comparePassword(us), generateToken(us))
+	mw := refmiddlewares.Login(getUser(us), comparePassword(us), us)
 	body := strings.NewReader(`{"email": "" }`)
 	r := mockServerHTTP(mw, body)
 
@@ -74,7 +72,7 @@ func TestLoginShouldFailGettingUserFromDB(t *testing.T) {
 	us := UserLoginMock{
 		shouldFailGetUser: true,
 	}
-	mw := refmiddlewares.Login(getUser(us), comparePassword(us), generateToken(us))
+	mw := refmiddlewares.Login(getUser(us), comparePassword(us), us)
 	body := strings.NewReader(`{"email": "fakeEmail" }`)
 	r := mockServerHTTP(mw, body)
 
@@ -91,7 +89,7 @@ func TestLoginShouldFailComparingPassword(t *testing.T) {
 			Email: "fakeEmail",
 		},
 	}
-	mw := refmiddlewares.Login(getUser(us), comparePassword(us), generateToken(us))
+	mw := refmiddlewares.Login(getUser(us), comparePassword(us), us)
 	body := strings.NewReader(`{"email": "fakeEmail" }`)
 	r := mockServerHTTP(mw, body)
 
@@ -109,7 +107,7 @@ func TestLoginShouldFailCreatingToken(t *testing.T) {
 			Password: "123456",
 		},
 	}
-	mw := refmiddlewares.Login(getUser(us), comparePassword(us), generateToken(us))
+	mw := refmiddlewares.Login(getUser(us), comparePassword(us), us)
 	body := strings.NewReader(`{"email": "fakeEmail" }`)
 	r := mockServerHTTP(mw, body)
 
@@ -127,7 +125,7 @@ func TestLoginShouldResponseStatusOK(t *testing.T) {
 			Password: "123456",
 		},
 	}
-	mw := refmiddlewares.Login(getUser(us), comparePassword(us), generateToken(us))
+	mw := refmiddlewares.Login(getUser(us), comparePassword(us), us)
 	body := strings.NewReader(`{"email": "fakeEmail" }`)
 	r := mockServerHTTP(mw, body)
 
