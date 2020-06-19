@@ -8,7 +8,8 @@ import (
 // CheckToken validate provided token
 func CheckToken(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		claims, _, _, err := security.GetTokenData(r.Header.Get("Authorization"))
+		authorization := r.Header.Get("Authorization")
+		claims, _, _, err := security.GetTokenData(authorization)
 
 		if err != nil {
 			http.Error(w, "Token Error "+err.Error(), http.StatusBadRequest)

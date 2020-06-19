@@ -2,8 +2,15 @@ package main
 
 import (
 	"log"
+	"net/http"
+	"os"
 	"tweetgo/database"
-	"tweetgo/handlers"
+	"tweetgo/pkg/finding"
+	"tweetgo/pkg/http/rest"
+	"tweetgo/pkg/loading"
+	"tweetgo/pkg/saving"
+	"tweetgo/pkg/storage/mongodb"
+	"tweetgo/pkg/tokenizer"
 )
 
 func main() {
@@ -13,5 +20,24 @@ func main() {
 		return
 	}
 
-	handlers.MainManagement()
+	securityKey := loading.GetSecurityKey()
+
+	//Storage
+	dbClient := mongodb.DBConnection()
+	userStorage := mongodb.NewUserStorage(dbClient)
+
+	//Services
+	savingUserService := saving.NewUserService(userStorage)
+	findingUserService := finding.NewUserService(userStorage)
+	tokenizerService := tokenizer.NewTokenService(securityKey)
+
+	r := rest.RouterManagement(savingUserService, findingUserService, *tokenizerService)
+
+	PORT := os.Getenv("PORT")
+
+	if PORT == "" {
+		PORT = "8080"
+	}
+
+	log.Fatal(http.ListenAndServe(":"+PORT, r))
 }
