@@ -14,8 +14,8 @@ type userCtxMock struct {
 	usr        domain.User
 }
 
-func mockServerHTTP(mw http.HandlerFunc, body *strings.Reader) *httptest.ResponseRecorder {
-	w := httptest.NewRequest("POST", "/", body)
+func mockServerHTTP(mw http.HandlerFunc, body *strings.Reader, params string, method string) *httptest.ResponseRecorder {
+	w := httptest.NewRequest(method, "/"+params, body)
 	rr := httptest.NewRecorder()
 	mw.ServeHTTP(rr, w)
 

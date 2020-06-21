@@ -15,7 +15,7 @@ import (
 )
 
 // RouterManagement set the main config for routers
-func RouterManagement(sus *saving.UserService, fus *finding.UserService, tks *tokenizer.TokenService, sts *saving.TweetService) http.Handler {
+func RouterManagement(sus *saving.UserService, fus *finding.UserService, tks *tokenizer.TokenService, sts *saving.TweetService, fts *finding.TweetService) http.Handler {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/user-register", rmiddlewares.ValidateUserExist(fus, domain.SetUserToContext, rmiddlewares.SaveUser(sus, domain.GetUserFromCtx))).Methods("POST")
@@ -23,7 +23,7 @@ func RouterManagement(sus *saving.UserService, fus *finding.UserService, tks *to
 	router.HandleFunc("/get-profile", rmiddlewares.CheckToken(domain.SetUserToContext, tks, rmiddlewares.GetProfile(domain.GetUserFromCtx, fus.GetUser))).Methods("GET")
 	router.HandleFunc("/update-profile", rmiddlewares.CheckToken(domain.SetUserToContext, tks, rmiddlewares.UpdateProfile(domain.GetUserFromCtx, sus.UpdateUser))).Methods("PUT")
 	router.HandleFunc("/save-tweet", rmiddlewares.CheckToken(domain.SetUserToContext, tks, rmiddlewares.SaveTweet(sts.SaveTweet, domain.GetUserFromCtx))).Methods("POST")
-	router.HandleFunc("/get-tweet", middlewares.CheckDatabase(middlewares.CheckToken(routers.GetTweet))).Methods("GET")
+	router.HandleFunc("/get-tweet", rmiddlewares.CheckToken(domain.SetUserToContext, tks, rmiddlewares.GetTweets(fts.GetTweets))).Methods("GET")
 	router.HandleFunc("/delete-tweet", middlewares.CheckDatabase(middlewares.CheckToken(routers.DeleteTweet))).Methods("DELETE")
 	router.HandleFunc("/upload-avatar", middlewares.CheckDatabase(middlewares.CheckToken(routers.UploadAvatar))).Methods("POST")
 

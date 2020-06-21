@@ -32,8 +32,9 @@ func main() {
 	findingUserService := finding.NewUserService(userStorage)
 	tokenizerService := tokenizer.NewTokenService(securityKey)
 	savingTweetService := saving.NewTweetService(tweetStorage)
+	findingTweetService := finding.NewTweetService(tweetStorage)
 
-	r := rest.RouterManagement(savingUserService, findingUserService, tokenizerService, savingTweetService)
+	r := rest.RouterManagement(savingUserService, findingUserService, tokenizerService, savingTweetService, findingTweetService)
 
 	PORT := os.Getenv("PORT")
 

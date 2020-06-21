@@ -29,7 +29,7 @@ func TestUpdateProfileShouldFailDecodingBody(t *testing.T) {
 	us := updateUserServiceMock{}
 	mw := refmiddlewares.UpdateProfile(domain.GetUserFromCtx, updateUserMock(us))
 	body := strings.NewReader(``)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -43,7 +43,7 @@ func TestUpdateProfileShouldFailGettingUserFromCtx(t *testing.T) {
 	}
 	mw := refmiddlewares.UpdateProfile(getUserFromCtxMock(usm), updateUserMock(us))
 	body := strings.NewReader(`{"name": "mockName"}`)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -63,7 +63,7 @@ func TestUpdateProfileShouldFailUpdatingUser(t *testing.T) {
 	}
 	mw := refmiddlewares.UpdateProfile(getUserFromCtxMock(usm), updateUserMock(us))
 	body := strings.NewReader(`{"name": "mockName"}`)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -81,7 +81,7 @@ func TestUpdateProfileShouldFailUpdatingUserWhenUpdateStatusIsFalse(t *testing.T
 	}
 	mw := refmiddlewares.UpdateProfile(getUserFromCtxMock(usm), updateUserMock(us))
 	body := strings.NewReader(`{"name": "mockName"}`)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadGateway {
 		t.Errorf("Expected status code %v, but got: %v", http.StatusBadGateway, r.Code)
@@ -101,7 +101,7 @@ func TestUpdateProfileShouldResponseWithStatusOk(t *testing.T) {
 	}
 	mw := refmiddlewares.UpdateProfile(getUserFromCtxMock(usm), updateUserMock(us))
 	body := strings.NewReader(`{"name": "mockName"}`)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusOK {
 		t.Errorf("Expected status code %v, but got: %v", http.StatusOK, r.Code)
