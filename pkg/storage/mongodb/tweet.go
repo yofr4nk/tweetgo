@@ -2,7 +2,9 @@ package mongodb
 
 import (
 	"context"
+	"errors"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
@@ -81,4 +83,28 @@ func (storage *TweetStorage) GetTweets(userID string, page int64) (domain.Tweets
 	}
 
 	return tweets, nil
+}
+
+func (storage *TweetStorage) DeleteTweet(ID string, UserID string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+
+	objTweetID, err := primitive.ObjectIDFromHex(ID)
+	if err != nil {
+		log.Print("Something went wrong parsing tweetID " + err.Error())
+
+		return err
+	}
+
+	filter := bson.M{
+		"_id":    objTweetID,
+		"userid": UserID,
+	}
+
+	result, err := storage.collection.DeleteOne(ctx, filter)
+	if result.DeletedCount == 0 {
+		return errors.New("it could not possible to find tweet")
+	}
+
+	return err
 }

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"tweetgo/database"
+	"tweetgo/pkg/deleting"
 	"tweetgo/pkg/finding"
 	"tweetgo/pkg/http/rest"
 	"tweetgo/pkg/loading"
@@ -33,8 +34,9 @@ func main() {
 	tokenizerService := tokenizer.NewTokenService(securityKey)
 	savingTweetService := saving.NewTweetService(tweetStorage)
 	findingTweetService := finding.NewTweetService(tweetStorage)
+	deletingTweetService := deleting.NewTweetService(tweetStorage)
 
-	r := rest.RouterManagement(savingUserService, findingUserService, tokenizerService, savingTweetService, findingTweetService)
+	r := rest.RouterManagement(savingUserService, findingUserService, tokenizerService, savingTweetService, findingTweetService, deletingTweetService)
 
 	PORT := os.Getenv("PORT")
 
