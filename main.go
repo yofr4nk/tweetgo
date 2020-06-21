@@ -4,7 +4,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"tweetgo/database"
 	"tweetgo/pkg/deleting"
 	"tweetgo/pkg/finding"
 	"tweetgo/pkg/http/rest"
@@ -15,12 +14,6 @@ import (
 )
 
 func main() {
-	if database.CheckingConnection() == false {
-		log.Fatal("Missing database connection")
-
-		return
-	}
-
 	securityKey := loading.GetSecurityKey()
 
 	//Storage

@@ -4,29 +4,27 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"net/http"
-	"tweetgo/middlewares"
 	"tweetgo/pkg/deleting"
 	"tweetgo/pkg/domain"
 	"tweetgo/pkg/finding"
-	rmiddlewares "tweetgo/pkg/http/middlewares"
+	"tweetgo/pkg/http/middleware"
 	"tweetgo/pkg/saving"
 	"tweetgo/pkg/tokenizer"
 	"tweetgo/pkg/validating"
-	"tweetgo/routers"
 )
 
 // RouterManagement set the main config for routers
 func RouterManagement(sus *saving.UserService, fus *finding.UserService, tks *tokenizer.TokenService, sts *saving.TweetService, fts *finding.TweetService, dts *deleting.TweetService) http.Handler {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/user-register", rmiddlewares.ValidateUserExist(fus, domain.SetUserToContext, rmiddlewares.SaveUser(sus, domain.GetUserFromCtx))).Methods("POST")
-	router.HandleFunc("/user-login", rmiddlewares.Login(fus.GetUser, validating.ComparePassword, tks)).Methods("POST")
-	router.HandleFunc("/get-profile", rmiddlewares.CheckToken(domain.SetUserToContext, tks, rmiddlewares.GetProfile(domain.GetUserFromCtx, fus.GetUser))).Methods("GET")
-	router.HandleFunc("/update-profile", rmiddlewares.CheckToken(domain.SetUserToContext, tks, rmiddlewares.UpdateProfile(domain.GetUserFromCtx, sus.UpdateUser))).Methods("PUT")
-	router.HandleFunc("/save-tweet", rmiddlewares.CheckToken(domain.SetUserToContext, tks, rmiddlewares.SaveTweet(sts.SaveTweet, domain.GetUserFromCtx))).Methods("POST")
-	router.HandleFunc("/get-tweet", rmiddlewares.CheckToken(domain.SetUserToContext, tks, rmiddlewares.GetTweets(fts.GetTweets))).Methods("GET")
-	router.HandleFunc("/delete-tweet", rmiddlewares.CheckToken(domain.SetUserToContext, tks, rmiddlewares.DeleteTweet(dts.DeleteTweet))).Methods("DELETE")
-	router.HandleFunc("/upload-avatar", middlewares.CheckDatabase(middlewares.CheckToken(routers.UploadAvatar))).Methods("POST")
+	router.HandleFunc("/user-register", middleware.ValidateUserExist(fus, domain.SetUserToContext, middleware.SaveUser(sus, domain.GetUserFromCtx))).Methods("POST")
+	router.HandleFunc("/user-login", middleware.Login(fus.GetUser, validating.ComparePassword, tks)).Methods("POST")
+	router.HandleFunc("/get-profile", middleware.CheckToken(domain.SetUserToContext, tks, middleware.GetProfile(domain.GetUserFromCtx, fus.GetUser))).Methods("GET")
+	router.HandleFunc("/update-profile", middleware.CheckToken(domain.SetUserToContext, tks, middleware.UpdateProfile(domain.GetUserFromCtx, sus.UpdateUser))).Methods("PUT")
+	router.HandleFunc("/save-tweet", middleware.CheckToken(domain.SetUserToContext, tks, middleware.SaveTweet(sts.SaveTweet, domain.GetUserFromCtx))).Methods("POST")
+	router.HandleFunc("/get-tweet", middleware.CheckToken(domain.SetUserToContext, tks, middleware.GetTweets(fts.GetTweets))).Methods("GET")
+	router.HandleFunc("/delete-tweet", middleware.CheckToken(domain.SetUserToContext, tks, middleware.DeleteTweet(dts.DeleteTweet))).Methods("DELETE")
+	//router.HandleFunc("/upload-avatar", middleware.CheckDatabase(middleware.CheckToken(routers.UploadAvatar))).Methods("POST")
 
 	handler := cors.AllowAll().Handler(router)
 
