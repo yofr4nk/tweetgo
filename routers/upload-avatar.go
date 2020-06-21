@@ -1,24 +1,15 @@
 package routers
 
-import (
-	"encoding/json"
-	"net/http"
-	"path/filepath"
-	"tweetgo/database"
-	"tweetgo/models"
-	"tweetgo/multimedia"
-
-	"go.mongodb.org/mongo-driver/bson/primitive"
-)
+import "net/http"
 
 // UploadAvatar allow to upload avatar image
 func UploadAvatar(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-type", "application/json")
 
-	userID := w.Header().Get("Id")
+	/*userID := w.Header().Get("Id")
 	email := w.Header().Get("Email")
 
-	var u models.User
+	var u domain.User
 
 	file, fileHeader, err := r.FormFile("avatar")
 
@@ -63,5 +54,5 @@ func UploadAvatar(w http.ResponseWriter, r *http.Request) {
 	w.Header().Del("Id")
 	w.Header().Del("Email")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(u)
+	json.NewEncoder(w).Encode(u)*/
 }
