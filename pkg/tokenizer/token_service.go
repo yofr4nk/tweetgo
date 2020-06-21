@@ -14,8 +14,8 @@ type TokenService struct {
 }
 
 type userClaim struct {
-	Email string
-	ID    primitive.ObjectID
+	Email string             `json:"email"`
+	ID    primitive.ObjectID `bson:"_id" json:"_id,omitempy"`
 	jwt.StandardClaims
 }
 

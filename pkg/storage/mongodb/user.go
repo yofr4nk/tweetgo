@@ -3,6 +3,7 @@ package mongodb
 import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"time"
 	"tweetgo/pkg/domain"
@@ -39,6 +40,29 @@ func (storage *UserStorage) SaveUser(u domain.User) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func (storage *UserStorage) UpdateUser(usrData domain.UserDataContainer, ID string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+
+	database := storage.db.Database(dbName)
+	userCollection := database.Collection(collection)
+
+	setContainer := bson.M{
+		"$set": usrData,
+	}
+
+	objID, _ := primitive.ObjectIDFromHex(ID)
+	filter := bson.M{"_id": bson.M{"$eq": objID}}
+
+	_, err := userCollection.UpdateOne(ctx, filter, setContainer)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (storage *UserStorage) FindUserExists(email string) (int64, error) {

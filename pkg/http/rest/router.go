@@ -21,7 +21,7 @@ func RouterManagement(sus *saving.UserService, fus *finding.UserService, tks tok
 	router.HandleFunc("/user-register", rmiddlewares.ValidateUserExist(fus, domain.SetUserToContext, rmiddlewares.SaveUser(sus, domain.GetUserFromCtx))).Methods("POST")
 	router.HandleFunc("/user-login", rmiddlewares.Login(fus.GetUser, validating.ComparePassword, tks)).Methods("POST")
 	router.HandleFunc("/get-profile", rmiddlewares.CheckToken(domain.SetUserToContext, tks, rmiddlewares.GetProfile(domain.GetUserFromCtx, fus.GetUser))).Methods("GET")
-	router.HandleFunc("/update-profile", middlewares.CheckDatabase(middlewares.CheckToken(routers.UpdateProfile))).Methods("PUT")
+	router.HandleFunc("/update-profile", rmiddlewares.CheckToken(domain.SetUserToContext, tks, rmiddlewares.UpdateProfile(domain.GetUserFromCtx, sus.UpdateUser))).Methods("PUT")
 	router.HandleFunc("/save-tweet", middlewares.CheckDatabase(middlewares.CheckToken(routers.SaveTweet))).Methods("POST")
 	router.HandleFunc("/get-tweet", middlewares.CheckDatabase(middlewares.CheckToken(routers.GetTweet))).Methods("GET")
 	router.HandleFunc("/delete-tweet", middlewares.CheckDatabase(middlewares.CheckToken(routers.DeleteTweet))).Methods("DELETE")
