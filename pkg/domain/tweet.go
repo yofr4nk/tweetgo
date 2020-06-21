@@ -8,3 +8,5 @@ type Tweet struct {
 	Message string             `bson:"message" json:"message,omitempty"`
 	Date    int64              `bson:"date" json:"date,omitempty"`
 }
+
+type Tweets []Tweet

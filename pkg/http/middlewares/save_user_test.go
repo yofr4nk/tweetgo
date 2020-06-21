@@ -31,7 +31,7 @@ func TestSaveUserShouldFailGettingUserFromCtx(t *testing.T) {
 
 	mw := refmiddlewares.SaveUser(&usm, getUserFromCtxMock(ucm))
 	body := strings.NewReader(``)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -46,7 +46,7 @@ func TestSaveUserShouldFailWhenEmailIsEmpty(t *testing.T) {
 
 	mw := refmiddlewares.SaveUser(&usm, getUserFromCtxMock(ucm))
 	body := strings.NewReader(``)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -64,7 +64,7 @@ func TestSaveUserShouldFailWhenPasswordIsEmpty(t *testing.T) {
 
 	mw := refmiddlewares.SaveUser(&usm, getUserFromCtxMock(ucm))
 	body := strings.NewReader(``)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -85,7 +85,7 @@ func TestSaveUserShouldFailSavingUserInDB(t *testing.T) {
 
 	mw := refmiddlewares.SaveUser(&usm, getUserFromCtxMock(ucm))
 	body := strings.NewReader(``)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -106,7 +106,7 @@ func TestSaveUserShouldFailSavingUserWhenGetStatusFalseFromDB(t *testing.T) {
 
 	mw := refmiddlewares.SaveUser(&usm, getUserFromCtxMock(ucm))
 	body := strings.NewReader(``)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -127,7 +127,7 @@ func TestSaveUserShouldResponseStatusCreated(t *testing.T) {
 
 	mw := refmiddlewares.SaveUser(&usm, getUserFromCtxMock(ucm))
 	body := strings.NewReader(``)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusCreated {
 		t.Errorf("Expected status code 201, but got: %v", r.Code)

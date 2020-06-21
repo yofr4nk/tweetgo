@@ -34,7 +34,7 @@ func TestCheckTokenShouldFailWhenValidationTokenFail(t *testing.T) {
 	}
 	mw := refmiddlewares.CheckToken(domain.SetUserToContext, tokenService, mockHandler)
 	body := strings.NewReader(``)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -47,7 +47,7 @@ func TestCheckTokenShouldFailWhenTokenIsNotValid(t *testing.T) {
 	}
 	mw := refmiddlewares.CheckToken(domain.SetUserToContext, tokenService, mockHandler)
 	body := strings.NewReader(``)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -64,7 +64,7 @@ func TestCheckTokenShouldResponseStatusOkWhenTokenIsValid(t *testing.T) {
 	}
 	mw := refmiddlewares.CheckToken(domain.SetUserToContext, tokenService, mockHandler)
 	body := strings.NewReader(``)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusOK {
 		t.Errorf("Expected status code 200, but got: %v", r.Code)

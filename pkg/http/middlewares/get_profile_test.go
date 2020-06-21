@@ -32,7 +32,7 @@ func TestGetProfileShouldFailGettingUserFromCtx(t *testing.T) {
 	usm := usrServiceMock{}
 	mw := refmiddlewares.GetProfile(getUserFromCtxMock(ucm), GetUserMock(usm))
 	body := strings.NewReader(``)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -52,7 +52,7 @@ func TestGetProfileShouldFailGettingUserFroDB(t *testing.T) {
 	}
 	mw := refmiddlewares.GetProfile(getUserFromCtxMock(ucm), GetUserMock(usm))
 	body := strings.NewReader(``)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -73,7 +73,7 @@ func TestGetProfileShouldResponseWithStatusOk(t *testing.T) {
 	}
 	mw := refmiddlewares.GetProfile(getUserFromCtxMock(ucm), GetUserMock(usm))
 	body := strings.NewReader(``)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusOK {
 		t.Errorf("Expected status code 200, but got: %v", r.Code)

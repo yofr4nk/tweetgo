@@ -29,7 +29,7 @@ func TestSaveTweetShouldFailParsingBody(t *testing.T) {
 
 	mw := refmiddlewares.SaveTweet(tsm.SaveTweet, getUserFromCtxMock(ucm))
 	body := strings.NewReader(``)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -44,7 +44,7 @@ func TestSaveTweetShouldFailGettingUserFromCtx(t *testing.T) {
 
 	mw := refmiddlewares.SaveTweet(tsm.SaveTweet, getUserFromCtxMock(ucm))
 	body := strings.NewReader(`{"message": "fakeMessage"}`)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -64,7 +64,7 @@ func TestSaveTweetShouldFailSavingTweet(t *testing.T) {
 
 	mw := refmiddlewares.SaveTweet(tsm.SaveTweet, getUserFromCtxMock(ucm))
 	body := strings.NewReader(`{"message": "fakeMessage"}`)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -82,7 +82,7 @@ func TestSaveTweetShouldFailWithStatusFalseSavingTweet(t *testing.T) {
 
 	mw := refmiddlewares.SaveTweet(tsm.SaveTweet, getUserFromCtxMock(ucm))
 	body := strings.NewReader(`{"message": "fakeMessage"}`)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -102,7 +102,7 @@ func TestSaveTweetShouldResponseWithStatusCreatedSavingTweet(t *testing.T) {
 
 	mw := refmiddlewares.SaveTweet(tsm.SaveTweet, getUserFromCtxMock(ucm))
 	body := strings.NewReader(`{"message": "fakeMessage"}`)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusCreated {
 		t.Errorf("Expected status code %v, but got: %v", http.StatusCreated, r.Code)

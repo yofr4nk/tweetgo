@@ -50,7 +50,7 @@ func TestLoginShouldFailParsingBody(t *testing.T) {
 	us := UserLoginMock{}
 	mw := refmiddlewares.Login(getUser(us), comparePassword(us), us)
 	body := strings.NewReader(``)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -61,7 +61,7 @@ func TestLoginShouldFailWhenEmailIsEmpty(t *testing.T) {
 	us := UserLoginMock{}
 	mw := refmiddlewares.Login(getUser(us), comparePassword(us), us)
 	body := strings.NewReader(`{"email": "" }`)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -74,7 +74,7 @@ func TestLoginShouldFailGettingUserFromDB(t *testing.T) {
 	}
 	mw := refmiddlewares.Login(getUser(us), comparePassword(us), us)
 	body := strings.NewReader(`{"email": "fakeEmail" }`)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -91,7 +91,7 @@ func TestLoginShouldFailComparingPassword(t *testing.T) {
 	}
 	mw := refmiddlewares.Login(getUser(us), comparePassword(us), us)
 	body := strings.NewReader(`{"email": "fakeEmail" }`)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -109,7 +109,7 @@ func TestLoginShouldFailCreatingToken(t *testing.T) {
 	}
 	mw := refmiddlewares.Login(getUser(us), comparePassword(us), us)
 	body := strings.NewReader(`{"email": "fakeEmail" }`)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusBadRequest {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
@@ -127,7 +127,7 @@ func TestLoginShouldResponseStatusOK(t *testing.T) {
 	}
 	mw := refmiddlewares.Login(getUser(us), comparePassword(us), us)
 	body := strings.NewReader(`{"email": "fakeEmail" }`)
-	r := mockServerHTTP(mw, body)
+	r := mockServerHTTP(mw, body, "", "POST")
 
 	if r.Code != http.StatusOK {
 		t.Errorf("Expected status code 400, but got: %v", r.Code)
