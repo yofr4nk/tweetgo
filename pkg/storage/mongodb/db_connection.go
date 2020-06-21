@@ -10,6 +10,8 @@ import (
 	"os"
 )
 
+const dbName string = "tweetgo"
+
 // DBConnection returns the client connection
 func DBConnection() *mongo.Client {
 

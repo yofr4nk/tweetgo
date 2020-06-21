@@ -13,7 +13,7 @@ func GetProfile(getUserFromCtx getUserFromCtx, getUser getUser) http.HandlerFunc
 
 		usrCtx, err := getUserFromCtx(r.Context())
 		if err != nil {
-			http.Error(w, "something went wrong getting user from context: "+err.Error(), 400)
+			http.Error(w, "something went wrong getting user from context: "+err.Error(), http.StatusBadRequest)
 
 			return
 		}
