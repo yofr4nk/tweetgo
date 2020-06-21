@@ -25,13 +25,15 @@ func main() {
 	//Storage
 	dbClient := mongodb.DBConnection()
 	userStorage := mongodb.NewUserStorage(dbClient)
+	tweetStorage := mongodb.NewTweetStorage(dbClient)
 
 	//Services
 	savingUserService := saving.NewUserService(userStorage)
 	findingUserService := finding.NewUserService(userStorage)
 	tokenizerService := tokenizer.NewTokenService(securityKey)
+	savingTweetService := saving.NewTweetService(tweetStorage)
 
-	r := rest.RouterManagement(savingUserService, findingUserService, *tokenizerService)
+	r := rest.RouterManagement(savingUserService, findingUserService, tokenizerService, savingTweetService)
 
 	PORT := os.Getenv("PORT")
 

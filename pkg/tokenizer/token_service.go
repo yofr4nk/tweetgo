@@ -1,13 +1,22 @@
 package tokenizer
 
 import (
+	"errors"
 	"github.com/dgrijalva/jwt-go"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"strings"
 	"time"
 	"tweetgo/pkg/domain"
 )
 
 type TokenService struct {
 	securityKey string
+}
+
+type userClaim struct {
+	Email string             `json:"email"`
+	ID    primitive.ObjectID `bson:"_id" json:"_id,omitempy"`
+	jwt.StandardClaims
 }
 
 type payload map[string]interface{}
@@ -52,6 +61,33 @@ func (ts TokenService) SingTokenData(dataToSign payload, securityKey []byte) (st
 	}
 
 	return token, nil
+}
+
+func (ts TokenService) GetAndValidateTokenData(token string) (domain.User, bool, error) {
+	claim := &userClaim{}
+	u := domain.User{}
+	tokenSplit := strings.Split(token, "Bearer")
+
+	if len(tokenSplit) != 2 {
+		return u, false, errors.New("invalid token format")
+	}
+
+	tokenToValidate := strings.TrimSpace(tokenSplit[1])
+	t, err := jwt.ParseWithClaims(tokenToValidate, claim, func(token *jwt.Token) (interface{}, error) {
+		return []byte(ts.securityKey), nil
+	})
+	if err != nil {
+		return u, false, err
+	}
+
+	if t.Valid {
+		u.ID = claim.ID
+		u.Email = claim.Email
+
+		return u, true, nil
+	}
+
+	return u, t.Valid, nil
 }
 
 func fillClaimsFromPayload(p payload) jwt.MapClaims {

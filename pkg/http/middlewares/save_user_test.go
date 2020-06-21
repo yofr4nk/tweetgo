@@ -1,7 +1,6 @@
 package refmiddlewares_test
 
 import (
-	"context"
 	"errors"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
@@ -11,24 +10,9 @@ import (
 	refmiddlewares "tweetgo/pkg/http/middlewares"
 )
 
-type userCtxMock struct {
-	shouldFail bool
-	usr        domain.User
-}
-
 type userSavingMock struct {
 	shouldFail bool
 	status     bool
-}
-
-func getUserFromCtxMock(usm userCtxMock) func(ctx context.Context) (domain.User, error) {
-	return func(ctx context.Context) (domain.User, error) {
-		if usm.shouldFail {
-			return domain.User{}, errors.New("error getting user")
-		}
-
-		return usm.usr, nil
-	}
 }
 
 func (usm *userSavingMock) SaveUser(u domain.User) (bool, error) {

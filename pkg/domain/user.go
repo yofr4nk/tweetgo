@@ -23,6 +23,8 @@ type User struct {
 	WebSite      string             `bson:"website" json:"website,omitempty"`
 }
 
+type UserDataContainer map[string]interface{}
+
 func SetUserToContext(ctx context.Context, u User) context.Context {
 	return context.WithValue(ctx, UserCtxKey, u)
 }
