@@ -1,7 +1,6 @@
 package middleware_test
 
 import (
-	"errors"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
 	"strings"
@@ -9,21 +8,6 @@ import (
 	"tweetgo/pkg/domain"
 	"tweetgo/pkg/http/middleware"
 )
-
-type updateUserServiceMock struct {
-	shouldFail   bool
-	updateStatus bool
-}
-
-func updateUserMock(usm updateUserServiceMock) func(u domain.User, ID string) (bool, error) {
-	return func(u domain.User, ID string) (bool, error) {
-		if usm.shouldFail {
-			return usm.updateStatus, errors.New("update user error mock")
-		}
-
-		return usm.updateStatus, nil
-	}
-}
 
 func TestUpdateProfileShouldFailDecodingBody(t *testing.T) {
 	us := updateUserServiceMock{}

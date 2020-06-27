@@ -14,6 +14,11 @@ type userCtxMock struct {
 	usr        domain.User
 }
 
+type updateUserServiceMock struct {
+	shouldFail   bool
+	updateStatus bool
+}
+
 func mockServerHTTP(mw http.HandlerFunc, body *strings.Reader, params string, method string) *httptest.ResponseRecorder {
 	w := httptest.NewRequest(method, "/"+params, body)
 	rr := httptest.NewRecorder()
@@ -33,5 +38,15 @@ func getUserFromCtxMock(usm userCtxMock) func(ctx context.Context) (domain.User,
 		}
 
 		return usm.usr, nil
+	}
+}
+
+func updateUserMock(usm updateUserServiceMock) func(u domain.User, ID string) (bool, error) {
+	return func(u domain.User, ID string) (bool, error) {
+		if usm.shouldFail {
+			return usm.updateStatus, errors.New("update user error mock")
+		}
+
+		return usm.updateStatus, nil
 	}
 }

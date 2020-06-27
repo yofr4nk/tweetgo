@@ -1,19 +1,13 @@
-package multimedia
+package s3
 
 import (
-	"log"
-	"os"
-
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"log"
 )
 
-// CreateAwsSession build session to allow actions in aws client
-func CreateAwsSession() (*session.Session, error) {
-	awsAccessKey := os.Getenv("ACCESS_KEY")
-	awsSecretKey := os.Getenv("SECRET_KEY")
-
+func CreateAwsSession(awsAccessKey string, awsSecretKey string) (*session.Session, error) {
 	sess, err := session.NewSession(&aws.Config{
 		Region:      aws.String("us-east-1"),
 		Credentials: credentials.NewStaticCredentials(awsAccessKey, awsSecretKey, ""),

@@ -1,21 +1,33 @@
 package loading
 
 import (
+	"errors"
 	"github.com/joho/godotenv"
-	"log"
 	"os"
 )
 
-func GetSecurityKey() string {
+type EnvironmentBody struct {
+	SecurityKey  string
+	Bucket       string
+	AwsAccessKey string
+	AwsSecretKey string
+}
+
+func GetEnvironmentKeys() (EnvironmentBody, error) {
 	//Checking environment before load .env
 	if os.Getenv("APP_ENV") != "production" {
 		err := godotenv.Load()
 		if err != nil {
-			log.Fatal("Error loading security environment variables", err.Error())
+			return EnvironmentBody{}, errors.New("error loading environment variables " + err.Error())
 		}
 	}
 
-	securityKey := os.Getenv("SECURITY_KEY")
+	envBody := EnvironmentBody{
+		SecurityKey:  os.Getenv("SECURITY_KEY"),
+		Bucket:       os.Getenv("BUCKET"),
+		AwsAccessKey: os.Getenv("ACCESS_KEY"),
+		AwsSecretKey: os.Getenv("SECRET_KEY"),
+	}
 
-	return securityKey
+	return envBody, nil
 }
