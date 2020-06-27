@@ -10,11 +10,19 @@ import (
 	"tweetgo/pkg/http/middleware"
 	"tweetgo/pkg/saving"
 	"tweetgo/pkg/tokenizer"
+	"tweetgo/pkg/uploading"
 	"tweetgo/pkg/validating"
 )
 
 // RouterManagement set the main config for routers
-func RouterManagement(sus *saving.UserService, fus *finding.UserService, tks *tokenizer.TokenService, sts *saving.TweetService, fts *finding.TweetService, dts *deleting.TweetService) http.Handler {
+func RouterManagement(sus *saving.UserService,
+	fus *finding.UserService,
+	tks *tokenizer.TokenService,
+	sts *saving.TweetService,
+	fts *finding.TweetService,
+	dts *deleting.TweetService,
+	ufs *uploading.UploadFileService,
+) http.Handler {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/user-register", middleware.ValidateUserExist(fus, domain.SetUserToContext, middleware.SaveUser(sus, domain.GetUserFromCtx))).Methods("POST")
@@ -24,7 +32,7 @@ func RouterManagement(sus *saving.UserService, fus *finding.UserService, tks *to
 	router.HandleFunc("/save-tweet", middleware.CheckToken(domain.SetUserToContext, tks, middleware.SaveTweet(sts.SaveTweet, domain.GetUserFromCtx))).Methods("POST")
 	router.HandleFunc("/get-tweet", middleware.CheckToken(domain.SetUserToContext, tks, middleware.GetTweets(fts.GetTweets))).Methods("GET")
 	router.HandleFunc("/delete-tweet", middleware.CheckToken(domain.SetUserToContext, tks, middleware.DeleteTweet(dts.DeleteTweet))).Methods("DELETE")
-	//router.HandleFunc("/upload-avatar", middleware.CheckDatabase(middleware.CheckToken(routers.UploadAvatar))).Methods("POST")
+	router.HandleFunc("/upload-avatar", middleware.CheckToken(domain.SetUserToContext, tks, middleware.UploadAvatar(domain.GetUserFromCtx, sus.UpdateUser, ufs.UploadFile))).Methods("POST")
 
 	handler := cors.AllowAll().Handler(router)
 
