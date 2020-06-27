@@ -33,6 +33,7 @@ func RouterManagement(sus *saving.UserService,
 	router.HandleFunc("/get-tweet", middleware.CheckToken(domain.SetUserToContext, tks, middleware.GetTweets(fts.GetTweets))).Methods("GET")
 	router.HandleFunc("/delete-tweet", middleware.CheckToken(domain.SetUserToContext, tks, middleware.DeleteTweet(dts.DeleteTweet))).Methods("DELETE")
 	router.HandleFunc("/upload-avatar", middleware.CheckToken(domain.SetUserToContext, tks, middleware.UploadAvatar(domain.GetUserFromCtx, sus.UpdateUser, ufs.UploadFile))).Methods("POST")
+	router.HandleFunc("/upload-banner", middleware.CheckToken(domain.SetUserToContext, tks, middleware.UploadBanner(domain.GetUserFromCtx, sus.UpdateUser, ufs.UploadFile))).Methods("POST")
 
 	handler := cors.AllowAll().Handler(router)
 

@@ -15,14 +15,14 @@ import (
 	"tweetgo/pkg/http/middleware"
 )
 
-func TestUploadAvatarShouldFailGettingUserFromCtx(t *testing.T) {
+func TestUploadBannerShouldFailGettingUserFromCtx(t *testing.T) {
 	ucm := userCtxMock{
 		shouldFail: true,
 	}
 	usm := updateUserServiceMock{}
 	ufs := uploadFileMockService{}
 
-	mw := middleware.UploadAvatar(getUserFromCtxMock(ucm), updateUserMock(usm), ufs.uploadFileMock)
+	mw := middleware.UploadBanner(getUserFromCtxMock(ucm), updateUserMock(usm), ufs.uploadFileMock)
 	body := strings.NewReader(``)
 	r := mockServerHTTP(mw, body, "", "POST")
 
@@ -31,7 +31,7 @@ func TestUploadAvatarShouldFailGettingUserFromCtx(t *testing.T) {
 	}
 }
 
-func TestUploadAvatarShouldFailGettingFileFromRequest(t *testing.T) {
+func TestUploadBannerShouldFailGettingFileFromRequest(t *testing.T) {
 	ucm := userCtxMock{
 		usr: domain.User{
 			ID:    primitive.ObjectID{},
@@ -41,7 +41,7 @@ func TestUploadAvatarShouldFailGettingFileFromRequest(t *testing.T) {
 	usm := updateUserServiceMock{}
 	ufs := uploadFileMockService{}
 
-	mw := middleware.UploadAvatar(getUserFromCtxMock(ucm), updateUserMock(usm), ufs.uploadFileMock)
+	mw := middleware.UploadBanner(getUserFromCtxMock(ucm), updateUserMock(usm), ufs.uploadFileMock)
 	body := strings.NewReader(``)
 	r := mockServerHTTP(mw, body, "", "POST")
 
@@ -50,7 +50,7 @@ func TestUploadAvatarShouldFailGettingFileFromRequest(t *testing.T) {
 	}
 }
 
-func TestUploadAvatarShouldFailUploadingFile(t *testing.T) {
+func TestUploadBannerShouldFailUploadingFile(t *testing.T) {
 	ucm := userCtxMock{
 		usr: domain.User{
 			ID:    primitive.ObjectID{},
@@ -62,7 +62,7 @@ func TestUploadAvatarShouldFailUploadingFile(t *testing.T) {
 		shouldFail: true,
 	}
 
-	mw := middleware.UploadAvatar(getUserFromCtxMock(ucm), updateUserMock(usm), ufs.uploadFileMock)
+	mw := middleware.UploadBanner(getUserFromCtxMock(ucm), updateUserMock(usm), ufs.uploadFileMock)
 	path := "../../../assets/mocks/middleware/avatar_mock.jpg"
 	file, err := os.Open(path)
 	if err != nil {
@@ -72,7 +72,7 @@ func TestUploadAvatarShouldFailUploadingFile(t *testing.T) {
 	defer file.Close()
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
-	p, err := writer.CreateFormFile("avatar", filepath.Base(path))
+	p, err := writer.CreateFormFile("banner", filepath.Base(path))
 	if err != nil {
 		writer.Close()
 		t.Error(err)
@@ -91,7 +91,7 @@ func TestUploadAvatarShouldFailUploadingFile(t *testing.T) {
 	}
 }
 
-func TestUploadAvatarShouldFailUpdatingUser(t *testing.T) {
+func TestUploadBannerShouldFailUpdatingUser(t *testing.T) {
 	ucm := userCtxMock{
 		usr: domain.User{
 			ID:    primitive.ObjectID{},
@@ -103,7 +103,7 @@ func TestUploadAvatarShouldFailUpdatingUser(t *testing.T) {
 	}
 	ufs := uploadFileMockService{}
 
-	mw := middleware.UploadAvatar(getUserFromCtxMock(ucm), updateUserMock(usm), ufs.uploadFileMock)
+	mw := middleware.UploadBanner(getUserFromCtxMock(ucm), updateUserMock(usm), ufs.uploadFileMock)
 	path := "../../../assets/mocks/middleware/avatar_mock.jpg"
 	file, err := os.Open(path)
 	if err != nil {
@@ -113,7 +113,7 @@ func TestUploadAvatarShouldFailUpdatingUser(t *testing.T) {
 	defer file.Close()
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
-	p, err := writer.CreateFormFile("avatar", filepath.Base(path))
+	p, err := writer.CreateFormFile("banner", filepath.Base(path))
 	if err != nil {
 		writer.Close()
 		t.Error(err)
@@ -132,7 +132,7 @@ func TestUploadAvatarShouldFailUpdatingUser(t *testing.T) {
 	}
 }
 
-func TestUploadAvatarShouldFailUpdatingUserWithStatusFalse(t *testing.T) {
+func TestUploadBannerShouldFailUpdatingUserWithStatusFalse(t *testing.T) {
 	ucm := userCtxMock{
 		usr: domain.User{
 			ID:    primitive.ObjectID{},
@@ -142,7 +142,7 @@ func TestUploadAvatarShouldFailUpdatingUserWithStatusFalse(t *testing.T) {
 	usm := updateUserServiceMock{}
 	ufs := uploadFileMockService{}
 
-	mw := middleware.UploadAvatar(getUserFromCtxMock(ucm), updateUserMock(usm), ufs.uploadFileMock)
+	mw := middleware.UploadBanner(getUserFromCtxMock(ucm), updateUserMock(usm), ufs.uploadFileMock)
 	path := "../../../assets/mocks/middleware/avatar_mock.jpg"
 	file, err := os.Open(path)
 	if err != nil {
@@ -152,7 +152,7 @@ func TestUploadAvatarShouldFailUpdatingUserWithStatusFalse(t *testing.T) {
 	defer file.Close()
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
-	p, err := writer.CreateFormFile("avatar", filepath.Base(path))
+	p, err := writer.CreateFormFile("banner", filepath.Base(path))
 	if err != nil {
 		writer.Close()
 		t.Error(err)
@@ -171,7 +171,7 @@ func TestUploadAvatarShouldFailUpdatingUserWithStatusFalse(t *testing.T) {
 	}
 }
 
-func TestUploadAvatarShouldResponseWithStatusOk(t *testing.T) {
+func TestUploadBannerShouldResponseWithStatusOk(t *testing.T) {
 	ucm := userCtxMock{
 		usr: domain.User{
 			ID:    primitive.ObjectID{},
@@ -183,7 +183,7 @@ func TestUploadAvatarShouldResponseWithStatusOk(t *testing.T) {
 	}
 	ufs := uploadFileMockService{}
 
-	mw := middleware.UploadAvatar(getUserFromCtxMock(ucm), updateUserMock(usm), ufs.uploadFileMock)
+	mw := middleware.UploadBanner(getUserFromCtxMock(ucm), updateUserMock(usm), ufs.uploadFileMock)
 	path := "../../../assets/mocks/middleware/avatar_mock.jpg"
 	file, err := os.Open(path)
 	if err != nil {
@@ -193,7 +193,7 @@ func TestUploadAvatarShouldResponseWithStatusOk(t *testing.T) {
 	defer file.Close()
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
-	p, err := writer.CreateFormFile("avatar", filepath.Base(path))
+	p, err := writer.CreateFormFile("banner", filepath.Base(path))
 	if err != nil {
 		writer.Close()
 		t.Error(err)

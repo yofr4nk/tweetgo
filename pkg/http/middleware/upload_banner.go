@@ -8,7 +8,7 @@ import (
 	"tweetgo/pkg/domain"
 )
 
-func UploadAvatar(getUserFromCtx getUserFromCtx, updateUser updateUser, uploadFile uploadFile) http.HandlerFunc {
+func UploadBanner(getUserFromCtx getUserFromCtx, updateUser updateUser, uploadFile uploadFile) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-type", "application/json")
 
@@ -23,35 +23,35 @@ func UploadAvatar(getUserFromCtx getUserFromCtx, updateUser updateUser, uploadFi
 		userID := usrCtx.ID.Hex()
 		email := usrCtx.Email
 
-		file, fileHeader, err := r.FormFile("avatar")
+		file, fileHeader, err := r.FormFile("banner")
 		if err != nil {
-			http.Error(w, "Something went wrong getting file ", http.StatusBadRequest)
+			http.Error(w, "Something went wrong getting file "+err.Error(), http.StatusBadRequest)
 
 			return
 		}
 
 		defer file.Close()
 
-		filePathName := "avatars/" + primitive.NewObjectID().Hex() + filepath.Ext(fileHeader.Filename)
+		filePathName := "banners/" + primitive.NewObjectID().Hex() + filepath.Ext(fileHeader.Filename)
 
 		fileLocation, err := uploadFile(filePathName, file, fileHeader)
 		if err != nil {
-			http.Error(w, "Something went wrong uploading avatar ", http.StatusBadRequest)
+			http.Error(w, "Something went wrong uploading banner "+err.Error(), http.StatusBadRequest)
 
 			return
 		}
 
-		u.Avatar = fileLocation
+		u.Banner = fileLocation
 
 		status, err := updateUser(u, userID)
 		if err != nil {
-			http.Error(w, "Something went wrong uploading avatar"+err.Error(), 400)
+			http.Error(w, "Something went wrong uploading banner "+err.Error(), 400)
 
 			return
 		}
 
 		if status == false {
-			http.Error(w, "It could not possible to upload avatar", http.StatusBadRequest)
+			http.Error(w, "It could not possible to upload banner", http.StatusBadRequest)
 
 			return
 		}
